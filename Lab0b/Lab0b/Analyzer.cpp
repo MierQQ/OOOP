@@ -36,10 +36,16 @@ void Analyzer::AddFile(string inputFile) {
 }
 
 void Analyzer::OutCSV(string outputFile) {
+	multimap<int, string> sortedMap;
+	for (map<string, int>::iterator mapIterator = wordMap.begin(); mapIterator != wordMap.end(); ++mapIterator) {
+		sortedMap.insert(pair<int, string>(mapIterator->second, mapIterator->first));
+	}
+	wordMap.clear();
 	ofstream output;
 	output.open(outputFile);
-	for (map<string, int>::iterator slidingPair = wordMap.begin(); slidingPair != wordMap.end(); ++slidingPair) {
-		output << slidingPair->first << ',' << slidingPair->second << ',' << ((double)slidingPair->second / counter) * 100 << '%' << endl;
+	for (multimap<int, string>::reverse_iterator multimapIterator = sortedMap.rbegin(); multimapIterator != sortedMap.rend(); ++multimapIterator) {
+		output << multimapIterator->second << ',' << multimapIterator->first << ',' << multimapIterator->first / (double)counter * 100 << '%' << endl;
 	}
+	counter = 0;
 	output.close();
 }
