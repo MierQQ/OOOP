@@ -12,4 +12,8 @@ int  main(int argc, char* argv[]){
 	else {
 		std::cerr << "No arguments" << std::endl;
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> da5efd06bae83f7d16b2ab912ebe465a874fe85a
