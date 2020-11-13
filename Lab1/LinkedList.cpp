@@ -350,22 +350,12 @@ void LinkedList::pop_front()
 
 void LinkedList::push_back(const value_type& value)
 {
-	Node* newNode = new Node(value);
-	newNode->prev = head.prev;
-	newNode->next = &head;
-	head.prev->next = newNode;
-	head.prev = newNode;
-	++len;
+	insert(end(), value);
 }
 
 void LinkedList::push_front(const value_type& value)
 {
-	Node* newNode = new Node(value);
-	newNode->next = head.next;
-	newNode->prev = &head;
-	head.next->prev = newNode;
-	head.next = newNode;
-	++len;
+	insert(begin(), value);
 }
 
 LinkedList::iterator LinkedList::insert(iterator before, const value_type& value)
