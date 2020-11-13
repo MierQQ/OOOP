@@ -97,6 +97,14 @@ public:
 
 /*********Destructors**********/
 
+    //Copy assigment
+    LinkedList& operator=(const LinkedList& other);
+    //Move assigment
+    LinkedList& operator=(LinkedList&& other) noexcept;
+
+
+/*********Destructors**********/
+
     //Destructor
     ~LinkedList();
 

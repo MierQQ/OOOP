@@ -4,7 +4,7 @@ LinkedList::Node::Node()
 {
 	next = nullptr;
 	prev = nullptr;
-	value = {0};
+	value = value_type();
 }
 
 LinkedList::Node::Node(value_type inputValue)
@@ -152,11 +152,41 @@ LinkedList::LinkedList(const LinkedList& other) : LinkedList()
 LinkedList::LinkedList(LinkedList&& other) noexcept
 {
 	head = other.head;
+	head.next->prev = &head;
+	head.prev->next = &head;
 	len = other.len;
-	other.head.next = &head;
-	other.head.prev = &head;
+	other.head.next = &other.head;
+	other.head.prev = &other.head;
 	other.len = 0;
 }
+
+LinkedList& LinkedList::operator=(const LinkedList& other)
+{
+	if (other != *this) {
+		clear();
+		for (auto element : other) {
+			push_back(element);
+		}
+	}
+	return *this;
+}
+
+LinkedList& LinkedList::operator=(LinkedList&& other) noexcept
+{
+	if (other != *this) {
+		clear();
+		head = other.head;
+		head.next->prev = &head;
+		head.prev->next = &head;
+		len = other.len;
+		other.head.next = &other.head;
+		other.head.prev = &other.head;
+		other.len = 0;
+	}
+	return *this;
+}
+
+
 
 LinkedList::~LinkedList()
 {
@@ -186,7 +216,7 @@ LinkedList::const_iterator LinkedList::cbegin() const
 LinkedList::iterator LinkedList::end()
 {
 	iterator result;
-	result.currentNode = &head;
+	result.currentNode = head.next->prev;
 	return result;
 }
 
@@ -268,7 +298,7 @@ LinkedList::iterator LinkedList::erase(iterator position)
 		back.currentNode->prev = front.currentNode;
 		front.currentNode->next = back.currentNode;
 		delete toDeleteNode;
-		return back != end() ? back : front;
+		return back;
 	}
 	else {
 		throw("erase end Node");
@@ -307,22 +337,14 @@ void LinkedList::clear()
 void LinkedList::pop_back()
 {
 	if (!empty()) {
-		--len;
-		Node* toDelete = head.prev;
-		head.prev = head.prev->prev;
-		head.prev->next = &head;
-		delete toDelete;
+		erase(--end());
 	}
 }
 
 void LinkedList::pop_front()
 {
 	if (!empty()) {
-		--len;
-		Node* toDelete = head.next;
-		head.next = head.next->next;
-		head.next->prev = &head;
-		delete toDelete;
+		erase(begin());
 	}
 }
 
@@ -369,6 +391,9 @@ bool operator!=(const LinkedList& left, const LinkedList& right)
 {
 	LinkedList::const_iterator first = left.cbegin();
 	LinkedList::const_iterator second = right.cbegin();
+	if(&left == &right) {
+		return false;
+	}
 	while (true) {
 		if (first == left.cend() && second != right.cend() ||
 			first != left.cend() && second == right.cend()) {
@@ -386,6 +411,8 @@ bool operator!=(const LinkedList& left, const LinkedList& right)
 		}
 	}
 }
+
+
 
 bool operator==(const LinkedList& left, const LinkedList& right)
 {
