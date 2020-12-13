@@ -216,21 +216,21 @@ LinkedList::const_iterator LinkedList::cbegin() const
 LinkedList::iterator LinkedList::end()
 {
 	iterator result;
-	result.currentNode = head.next->prev;
+	result.currentNode = &head;
 	return result;
 }
 
 LinkedList::const_iterator LinkedList::end() const
 {
 	const_iterator result;
-	result.currentNode = head.next->prev;
+	result.currentNode = const_cast<Node*>(&head);
 	return result;
 }
 
 LinkedList::const_iterator LinkedList::cend() const
 {
 	const_iterator result;
-	result.currentNode = head.next->prev;
+	result.currentNode = const_cast<Node*>(&head);
 	return result;
 }
 
@@ -321,7 +321,7 @@ int LinkedList::remove(const value_type& value)
 	for (iterator toDelete = begin(); toDelete != end(); ++toDelete) {
 		if (*toDelete == value) {
 			++count;
-			erase(toDelete);
+			erase(toDelete--);
 		}
 	}
 	return count;
