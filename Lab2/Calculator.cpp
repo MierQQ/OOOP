@@ -58,7 +58,7 @@ void Calculator::calculate()
 		catch (MyException & ex) {
 			cerr << "Error in line " << line << ": " << ex.what() << endl;
 			ex.setLine(line);
-			throw ex;
+			throw;
 		}
 	}
 }
