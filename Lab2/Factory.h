@@ -2,18 +2,18 @@
 #include <string>
 #include <map>
 #include "MyExceptions.h"
-#include "Operators.h"
+#include "IOperatorMaker.h"
 
 using namespace std;
 
 class Factory{
-    map<string, IOperator*> operations_;
+    map<string, IOperatorMaker*> operations_;
 private:
-    Factory();
+    Factory() = default;
 public:
     Factory& operator=(const Factory&) = delete;
     Factory(const Factory&) = delete;
     static Factory& getInstance();
-    void addOperator(const string& str, IOperator* op);
-    IOperator& createOperator(const string& str);
+    void addOperatorMaker(const string& str, IOperatorMaker * operatorMaker);
+    IOperatorMaker& getOperatorMaker(const string& str);
 };

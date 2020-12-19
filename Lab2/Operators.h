@@ -3,14 +3,12 @@
 #include <map>
 #include <string>
 #include <fstream>
+#include <iostream>
 #include "MyExceptions.h"
+#include "IOperator.h"
+#include "OperatorMaker.h"
 
 using namespace std;
-
-class IOperator {
-public:
-    virtual void calculate(list<string> args, list<double>& stack, map<string, double>& variables, ofstream* out);
-};
 
 class Pop : public IOperator {
 public:

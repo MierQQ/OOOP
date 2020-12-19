@@ -51,9 +51,10 @@ void Calculator::calculate()
 		}
 		Factory& factory = Factory::getInstance();
 		try {
-			IOperator& oper = factory.createOperator(args.front());
+			IOperatorMaker& operatorMaker = factory.getOperatorMaker(args.front());
+			unique_ptr<IOperator> oper(operatorMaker.create());
 			args.pop_front();
-			oper.calculate(args, stack_, variables_, output_);
+			oper->calculate(args, stack_, variables_, output_);
 		}
 		catch (MyException & ex) {
 			cerr << "Error in line " << line << ": " << ex.what() << endl;
