@@ -1,15 +1,17 @@
 #include "Operators.h"
-#include <iostream>
 
 using namespace std;
 
-bool isDigit(const string& str) {
-	for (auto i : str) {
-		if (!isdigit(i)) {
-			return false;
-		}
-	}
-	return true;
+namespace {
+	OperatorMaker<Pop> pop("POP");
+	OperatorMaker<Push> push("PUSH");
+	OperatorMaker<Plus> plus("+");
+	OperatorMaker<Minus> minus("-");
+	OperatorMaker<Mul> mul("*");
+	OperatorMaker<Div> dic("/");
+	OperatorMaker<Sqrt> SQRT("SQRT");
+	OperatorMaker<Print> print("PRINT");
+	OperatorMaker<Define> define("DEFINE");
 }
 
 void Pop::calculate(list<string> args, list<double>& stack, map<string, double>& variables, ofstream* out) {
@@ -33,10 +35,14 @@ void Push::calculate(list<string> args, list<double>& stack, map<string, double>
 	if (variables.find(args.front()) != variables.end()) {
 		value = variables[args.front()];
 	}
-	else if (isDigit(args.front())){
-		value = stol(args.front());
+	else try{
+		size_t size = 0;
+		value = stod(args.front(), &size);
+		if (size != args.front().size()) {
+			throw exception();
+		}
 	}
-	else {
+	catch(exception) {
 		throw wrongArgs();
 	}
 	stack.push_front(value);
@@ -147,15 +153,16 @@ void Define::calculate(list<string> args, list<double>& stack, map<string, doubl
 	}
 	string str = args.front();
 	args.pop_front();
-	if (isDigit(args.front())) {
-		variables[str] = stol(args.front());
+	try {
+		size_t size = 0;
+		variables[str] = stod(args.front(), &size);
+		if (size != args.front().size()) {
+			throw exception();
+		}
 		args.pop_front();
 	}
-	else {
+	catch(exception) {
 		throw wrongArgs();
 	}
 }
 
-void IOperator::calculate(list<string> args, list<double>& stack, map<string, double>& variables, ofstream* out)
-{
-}

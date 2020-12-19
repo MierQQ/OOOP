@@ -5,7 +5,7 @@
 #include <list>
 #include <map>
 #include "MyExceptions.h"
-#include "Factory.h"
+#include "OperatorMaker.h"
 
 using namespace std;
 
