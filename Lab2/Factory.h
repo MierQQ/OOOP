@@ -11,6 +11,8 @@ class Factory{
 private:
     Factory();
 public:
+    Factory& operator=(const Factory&) = delete;
+    Factory(const Factory&) = delete;
     static Factory& getInstance();
     void addOperator(const string& str, IOperator* op);
     IOperator& createOperator(const string& str);

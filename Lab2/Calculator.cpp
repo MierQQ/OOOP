@@ -49,7 +49,7 @@ void Calculator::calculate()
 		if (args.size() == 0) {
 			continue;
 		}
-		Factory factory = Factory::getInstance();
+		Factory& factory = Factory::getInstance();
 		try {
 			IOperator& oper = factory.createOperator(args.front());
 			args.pop_front();
@@ -58,7 +58,7 @@ void Calculator::calculate()
 		catch (MyException & ex) {
 			cerr << "Error in line " << line << ": " << ex.what() << endl;
 			ex.setLine(line);
-			throw ex;
+			throw;
 		}
 	}
 }

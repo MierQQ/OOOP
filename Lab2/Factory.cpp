@@ -20,7 +20,7 @@ Factory::Factory()
 	static Print print;
 	addOperator("PRINT", &print);
 	static Define define;
-	addOperator("Define", &define);
+	addOperator("DEFINE", &define);
 }
 
 Factory& Factory::getInstance()
